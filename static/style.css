@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #101820;
+    color: #fefefe;
+    text-align: center;
+    padding: 2rem;
+}
+.container {
+    background: #1c1c2b;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+}
+button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background: #00bcd4;
+    border: none;
+    color: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+.output {
+    margin-top: 2rem;
+    background: #232336;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+h1, h3 {
+    color: #00e0ff;
+}

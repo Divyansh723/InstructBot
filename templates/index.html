@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>InstructBot 🧠</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ InstructBot Desktop AI Assistant</h1>
+        <p>Status: <strong>{{ 'SAFE MODE' if safe_mode else 'DEV MODE' }}</strong></p>
+        <button id="listenBtn">🎤 Start Listening</button>
+        <div class="output">
+            <h3>Transcript:</h3>
+            <p id="transcript">...</p>
+            <h3>Response:</h3>
+            <p id="response">...</p>
+        </div>
+    </div>
+<script>
+document.getElementById("listenBtn").addEventListener("click", () => {
+    fetch("/listen", {method: "POST"})
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("transcript").innerText = data.transcript;
+        document.getElementById("response").innerText = data.response;
+    });
+});
+</script>
+</body>
+</html>
