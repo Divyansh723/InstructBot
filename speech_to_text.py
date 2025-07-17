@@ -17,7 +17,7 @@ CHUNK_DURATION = 0.3           # Seconds per audio chunk
 CHUNK_SIZE = int(SAMPLE_RATE * CHUNK_DURATION)
 AUDIO_FILENAME = "temp_audio.wav"
 ambient_rms = None 
-device_index=2            # will be updated after calibration
+device_index=1            # will be updated after calibration
 # ============================================================
 
 
