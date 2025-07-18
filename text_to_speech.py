@@ -47,11 +47,3 @@ def speak(text,DEFAULT_GENDER=DEFAULT_GENDER):
     select_voice(engine, DEFAULT_GENDER)
     engine.say(text)
     engine.runAndWait()
-
-# === Main loop ===
-if __name__ == "__main__":
-    while True:
-        user_input = input("Enter text to speak (or 'exit' to quit): ")
-        if user_input.lower() == "exit":
-            break
-        speak(user_input)

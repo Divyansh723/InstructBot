@@ -126,16 +126,3 @@ def listen():
         os.remove(audio_file)
 
     return text.lower().strip() if text else ""
-
-
-# 🔁 Demo usage
-if __name__ == "__main__":
-    calibrate_noise()
-    while True:
-        query = listen()
-        if query:
-            print(f"🗣️ You said: {query}")
-            if query == "end":
-                break
-        else:
-            print("🔇 No speech detected.")

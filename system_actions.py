@@ -7,11 +7,12 @@ import pyautogui
 import shutil
 import psutil
 from dateutil import parser
+from config import get_mode_value, set_mode_value
 
 # === Access Modes ===
-safe_mode = True          # 🟢 Default: Safe-only
-advanced_mode = False     # 🟡 Manual toggle
-admin_mode = False        # 🔴 Locked behind secret
+safe_mode = get_mode_value("SAFE_MODE")
+advanced_mode = get_mode_value("ALLOW_ADVANCED")
+admin_mode = get_mode_value("ALLOW_ADMIN")
 
 # === App Aliases ===
 app_aliases = {
@@ -29,33 +30,43 @@ def run_system_task(intent, params=None):
 
     try:
         intent = intent.strip().lower()
-        print(f"🔧 Received intent: {intent}, params: {params}")
+        print(f"\U0001f527 Received intent: {intent}, params: {params}")
 
-        # === Allow Mode Unlocks First ===
+        # === Allow Mode Unlocks and Locks ===
         if intent == "enable_advanced":
+            set_mode_value("ALLOW_ADVANCED", True)
             advanced_mode = True
-            return "🟡 Advanced Mode enabled."
+            return "\U0001f7e1 Advanced Mode enabled."
+        elif intent == "disable_advanced":
+            set_mode_value("ALLOW_ADVANCED", False)
+            advanced_mode = False
+            return "\U0001f7e1 Advanced Mode disabled."
         elif intent == "enable_admin":
+            set_mode_value("ALLOW_ADMIN", True)
             admin_mode = True
-            return "🔴 Admin Mode enabled."
-            
+            return "\U0001f534 Admin Mode enabled."
+        elif intent == "disable_admin":
+            set_mode_value("ALLOW_ADMIN", False)
+            admin_mode = False
+            return "\U0001f534 Admin Mode disabled."
+
         # === Admin Mode Restrictions ===
         admin_only = ["run_shell", "delete_file", "rename_file", "shutdown", "restart_system"]
         if intent in admin_only and not admin_mode:
-            return f"🔴 '{intent}' is locked under Admin Mode."
-        
+            return f"\U0001f534 '{intent}' is locked under Admin Mode."
+
         # === Advanced Mode Restrictions ===
         advanced_only = ["clean_downloads", "move_files", "system_report", "clean_by_date"]
         if intent in advanced_only and not advanced_mode:
-            return f"🟡 '{intent}' requires Advanced Mode. Use enable_advanced first."
-        
+            return f"\U0001f7e1 '{intent}' requires Advanced Mode. Use enable_advanced first."
+
         # === Safe Mode Restrictions ===
         safe_allowed = [
             "open_notepad", "open_calculator", "open_browser", "take_screenshot",
             "get_time_date_status", "count_files", "open_app", "search_google"
         ]
-        if intent not in safe_allowed and not advanced_mode and not  admin_mode:
-            return f"🔒 '{intent}' is not allowed."
+        if intent not in safe_allowed and not advanced_mode and not admin_mode:
+            return f"\U0001f512 '{intent}' is not allowed."
 
         # === Task Execution ===
         match intent:
@@ -99,8 +110,7 @@ def run_system_task(intent, params=None):
                 date = params.get("date", "")
                 filter = params.get("filter", "before")
                 return clean_downloads_by_date(filter, date)
-            case _:
-                return f"⚠️ Unknown system intent: '{intent}'"
+            case _: return f"⚠️ Unknown system intent: '{intent}'"
 
     except Exception as e:
         return f"❌ System task failed: {str(e)}"
@@ -282,19 +292,3 @@ def clean_downloads_by_date(filter='on', date_str='2024-01-01'):
         return f"🧹 Deleted {len(deleted_files)} files:\n" + "\n".join(deleted_files)
     except Exception as e:
         return f"❌ Failed to clean by date: {e}"
-
-# === Manual Test Loop ===
-if __name__ == "__main__":
-    print("🧪 Type system intent (e.g., open_app app=chrome | clean_by_date filter=before date=2024-07-01)")
-    while True:
-        user_input = input(">> ")
-        if user_input.lower() == "exit":
-            break
-        try:
-            parts = user_input.strip().split()
-            intent = parts[0]
-            params = {k: v for k, v in (p.split('=') for p in parts[1:])}
-        except:
-            print("⚠️ Format: intent param=value")
-            continue
-        print(run_system_task(intent, params))

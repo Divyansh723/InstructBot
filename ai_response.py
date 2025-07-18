@@ -128,13 +128,3 @@ def ask_instructbot(user_input: str) -> dict:
             "intent": None,
             "params": {}
         }
-    
-while True:
-    user_input = input("You: ")
-    if user_input.lower() in ["exit", "quit"]:
-        break
-
-    response = ask_instructbot(user_input)
-    print(f"InstructBot: {response['text']}")
-    if response['type'] == "system_task":
-        print(f"Intent: {response['intent']}, Params: {response['params']}")

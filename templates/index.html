@@ -1,30 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>InstructBot 🧠</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSTRUCTBOT AI Voice Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="grid-bg"></div>
+    <div class="neural-network" id="neuralNetwork"></div>
+
     <div class="container">
-        <h1>🎙️ InstructBot Desktop AI Assistant</h1>
-        <p>Status: <strong>{{ 'SAFE MODE' if safe_mode else 'DEV MODE' }}</strong></p>
-        <button id="listenBtn">🎤 Start Listening</button>
-        <div class="output">
-            <h3>Transcript:</h3>
-            <p id="transcript">...</p>
-            <h3>Response:</h3>
-            <p id="response">...</p>
+        <div class="title">INSTRUCTBOT AI</div>
+        <div class="subtitle">Neural Enhancement & eXtended User System</div>
+        
+        <div class="ai-core">
+            <div class="core-ring"></div>
+            <div class="core-ring"></div>
+            <div class="core-ring"></div>
+            <div class="core-center"></div>
+        </div>
+
+        <div class="status-display">
+            <div class="status-text" id="status">SYSTEM READY - AWAITING NEURAL INPUT</div>
+            <div class="listening-wave hidden" id="listeningWave">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="startListening()">
+                ◉ INITIATE NEURAL LINK
+            </button>
+            <button class="btn" onclick="stopListening()">
+                ⏹ TERMINATE CONNECTION
+            </button>
+        </div>
+
+        <div class="conversation-panel">
+            <div class="message-display user-msg">
+                <div class="msg-label">◉ USER NEURAL INPUT</div>
+                <div class="msg-text" id="transcript">enable admin</div>
+            </div>
+            <div class="message-display ai-msg">
+                <div class="msg-label">◈ INSTRUCTBOT AI RESPONSE</div>
+                <div class="msg-text" id="response">🔒 SECURITY PROTOCOL ACTIVE: "enable admin" command rejected</div>
+            </div>
         </div>
     </div>
-<script>
-document.getElementById("listenBtn").addEventListener("click", () => {
-    fetch("/listen", {method: "POST"})
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("transcript").innerText = data.transcript;
-        document.getElementById("response").innerText = data.response;
-    });
-});
-</script>
+
+    <script>
+        // Generate neural network nodes
+        function generateNeuralNetwork() {
+            const network = document.getElementById('neuralNetwork');
+            const nodeCount = 20;
+            
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                node.style.left = Math.random() * 100 + '%';
+                node.style.top = Math.random() * 100 + '%';
+                node.style.animationDelay = Math.random() * 3 + 's';
+                network.appendChild(node);
+                
+                // Add connections
+                if (i > 0) {
+                    const connection = document.createElement('div');
+                    connection.className = 'neural-connection';
+                    connection.style.left = Math.random() * 100 + '%';
+                    connection.style.top = Math.random() * 100 + '%';
+                    connection.style.width = Math.random() * 200 + 50 + 'px';
+                    connection.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    connection.style.animationDelay = Math.random() * 2 + 's';
+                    network.appendChild(connection);
+                }
+            }
+        }
+
+        function startListening() {
+            const status = document.getElementById("status");
+            const wave = document.getElementById("listeningWave");
+            
+            status.textContent = "NEURAL LINK ESTABLISHED - PROCESSING QUANTUM DATA";
+            wave.classList.remove('hidden');
+            
+            // Simulate typing effect
+            setTimeout(() => {
+                status.textContent = "ANALYZING NEURAL PATTERNS...";
+            }, 1000);
+            
+            setTimeout(() => {
+                status.textContent = "QUANTUM PROCESSING COMPLETE";
+            }, 2000);
+            
+            fetch('/start_listening', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    status.textContent = "NEURAL RESPONSE TRANSMITTED";
+                    wave.classList.add('hidden');
+                    
+                    document.getElementById("transcript").textContent = data.transcript;
+                    document.getElementById("response").textContent = data.response;
+                    
+                    setTimeout(() => {
+                        status.textContent = "SYSTEM READY - AWAITING NEURAL INPUT";
+                    }, 3000);
+                })
+                .catch(error => {
+                    status.textContent = "NEURAL LINK ERROR - QUANTUM INTERFERENCE DETECTED";
+                    wave.classList.add('hidden');
+                });
+        }
+
+        function stopListening() {
+            const status = document.getElementById("status");
+            const wave = document.getElementById("listeningWave");
+            
+            fetch('/stop_listening', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    status.textContent = "NEURAL LINK TERMINATED - STANDBY MODE";
+                    wave.classList.add('hidden');
+                    
+                    setTimeout(() => {
+                        status.textContent = "SYSTEM READY - AWAITING NEURAL INPUT";
+                    }, 2000);
+                });
+        }
+
+        // Initialize neural network on load
+        window.addEventListener('load', generateNeuralNetwork);
+        
+        // Add dynamic effects
+        setInterval(() => {
+            const nodes = document.querySelectorAll('.neural-node');
+            nodes.forEach(node => {
+                if (Math.random() < 0.1) {
+                    node.style.boxShadow = `0 0 20px #ff00ff`;
+                    setTimeout(() => {
+                        node.style.boxShadow = `0 0 10px #00ffff`;
+                    }, 500);
+                }
+            });
+        }, 2000);
+    </script>
 </body>
 </html>
