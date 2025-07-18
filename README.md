@@ -108,8 +108,9 @@ If SAFE_MODE = False, system commands will execute directly – use caution.
 
 AI response models should be sandboxed if connected to powerful tools.
 
-📃 License
+##📃 License
 This project is open-source and available under the MIT License.
-
-🙋‍♂️ Author
+---
+##🙋‍♂️ Author
 Made with ❤️ by Divyansh
+---
